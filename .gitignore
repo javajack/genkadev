@@ -1,0 +1,30 @@
+# Secrets and credentials — NEVER commit
+genka_key.txt
+*.key
+*.pem
+*.env
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Build / temp
+node_modules/
+dist/
+build/
+.cache/
+*.log
+
+# Backups
+*.bak
+*.orig

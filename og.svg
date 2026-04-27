@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <style>
+      .bg{fill:#F2F2EC}
+      .ink{fill:#0A0A0F}
+      .blue{fill:#1F3FFF}
+      .blue-tint{fill:#DCE3FF}
+      .stroke{stroke:#0A0A0F;stroke-width:6;fill:none}
+      .stroke-thin{stroke:#0A0A0F;stroke-width:3;fill:none}
+      text{font-family:'Space Grotesk','Inter',sans-serif;fill:#0A0A0F}
+      .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+      .display{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em}
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="630"/>
+
+  <!-- Decorative blue square (brutalist offset) -->
+  <g transform="translate(900,-80) rotate(12 200 200)">
+    <rect class="blue" x="0" y="0" width="400" height="400"/>
+    <rect class="stroke" x="0" y="0" width="400" height="400"/>
+  </g>
+  <g transform="translate(1010,40) rotate(8 100 100)">
+    <rect class="bg" x="0" y="0" width="180" height="180"/>
+    <rect class="stroke" x="0" y="0" width="180" height="180"/>
+  </g>
+
+  <!-- Brand mark -->
+  <g transform="translate(60,60)">
+    <rect class="blue" x="0" y="0" width="44" height="44"/>
+    <rect class="stroke-thin" x="0" y="0" width="44" height="44"/>
+    <rect class="bg" x="6" y="6" width="32" height="32"/>
+    <rect class="stroke-thin" x="6" y="6" width="32" height="32"/>
+  </g>
+  <text class="display" x="120" y="92" font-size="22" font-weight="700">GENKA / FEEDBACK + PITCH</text>
+
+  <!-- Eyebrow tag -->
+  <rect class="ink" x="60" y="160" width="510" height="36"/>
+  <text class="mono" x="74" y="184" font-size="15" fill="#F2F2EC" letter-spacing="3" font-weight="600">FOUNDER FEEDBACK · GAPS · REVISED PITCH · v1.1</text>
+
+  <!-- Headline -->
+  <text class="display" x="60" y="265" font-size="62">Hey Genka — here's some</text>
+  <text class="display" x="60" y="332" font-size="62"><tspan fill="#1F3FFF">honest feedback</tspan>, a list of</text>
+  <text class="display" x="60" y="399" font-size="62"><tspan fill="#1F3FFF">gaps</tspan>, and a <tspan fill="#1F3FFF">bigger pitch</tspan>.</text>
+
+  <!-- Verdict bar -->
+  <g transform="translate(60,440)">
+    <rect class="bg" x="6" y="6" width="828" height="120" fill="#1F3FFF"/>
+    <rect class="bg" x="0" y="0" width="828" height="120"/>
+    <rect class="stroke" x="0" y="0" width="828" height="120"/>
+    <line class="stroke-thin" x1="207" y1="0" x2="207" y2="120"/>
+    <line class="stroke-thin" x1="414" y1="0" x2="414" y2="120"/>
+    <line class="stroke-thin" x1="621" y1="0" x2="621" y2="120"/>
+
+    <text class="mono" x="20" y="32" font-size="11" letter-spacing="2" font-weight="700" fill="#555560">WHAT'S WORKING</text>
+    <text class="display" x="20" y="78" font-size="34" fill="#1F3FFF">API craft</text>
+    <text x="20" y="103" font-size="13" fill="#555560">Best-in-class envelope.</text>
+
+    <text class="mono" x="227" y="32" font-size="11" letter-spacing="2" font-weight="700" fill="#555560">WHAT NEEDS WORK</text>
+    <text class="display" x="227" y="78" font-size="34" fill="#1F3FFF">5 areas</text>
+    <text x="227" y="103" font-size="13" fill="#555560">Correctness, coverage, pricing.</text>
+
+    <text class="mono" x="434" y="32" font-size="11" letter-spacing="2" font-weight="700" fill="#555560">THE UNLOCK</text>
+    <text class="display" x="434" y="78" font-size="34" fill="#1F3FFF">Family Vault</text>
+    <text x="434" y="103" font-size="13" fill="#555560">Multi-account research → OS.</text>
+
+    <text class="mono" x="641" y="32" font-size="11" letter-spacing="2" font-weight="700" fill="#555560">THE WINDOW</text>
+    <text class="display" x="641" y="78" font-size="34" fill="#1F3FFF">~18 mo</text>
+    <text x="641" y="103" font-size="13" fill="#555560">Before incumbents catch up.</text>
+  </g>
+
+  <!-- Author byline -->
+  <g transform="translate(60,592)">
+    <text class="mono" x="0" y="0" font-size="14" font-weight="600" letter-spacing="1">BY RAKESH WAGHELA  ·  javajack.github.io  ·  @webiyo  ·  2026-04-27</text>
+  </g>
+</svg>
