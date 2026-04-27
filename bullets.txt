@@ -1,0 +1,234 @@
+# 📋 Genka.dev — Founder Feedback, Gaps & Revised Pitch — TL;DR
+
+> A standalone bullet summary of the full memo at **https://javajack.github.io/genkadev/**. Read this first. The full doc has the citations, tables, and architectural detail.
+
+---
+
+### 🎯 The whole memo in 60 seconds
+
+- 🛠️ **What is Genka.dev:** A REST API for Indian listed equities (NSE + BSE universe) with primary-source citations, MCP-ready design, and the cleanest envelope hygiene I've seen in the segment.
+- ⛰️ **The problem:** Even at its best, a pure data API in Indian retail markets has a hard ARR ceiling of **~₹15 Cr** (thesis estimate). Engineering excellence cannot break that ceiling.
+- 🧩 **The unlock:** Combine the data API with an AI-native research surface, a multi-account **Family Vault**, and a published **Fairness & Compliance Charter**. ARR ceiling moves to **~₹150–300 Cr** (thesis estimate).
+- ⏰ **Window:** ~18 months before Tijori's Series A capital entrenches and INDmoney pivots into honest research.
+
+---
+
+## 🏗️ PART I — Founder Feedback (builder-to-builder)
+
+### ✅ What you've shipped well (8 strengths — don't lose any)
+
+- 📜 **Primary-source citations on every numeric field** (`meta.sources[]` → NSE bhavcopy / NSE XBRL / SEBI). Rare. Foundation of every defensible AI product downstream.
+- 🧱 **Stripe-style `expand[]`** on price-snapshot. Composable, idiomatic — no Indian-market competitor does this.
+- 🚦 **RFC 7807 `problem+json` errors** with `request_id`, billing-aware (`billable: false` on errors). Production-grade hygiene.
+- 🤖 **LLM-first design** — `llms.txt`, MCP server at `/mcp`, machine-readable OpenAPI. Most APIs in any geography haven't placed this bet yet in 2026.
+- 📊 **Server-side indicator panel** — RSI(14), MACD, Bollinger, ATR, DMA-50/200 pre-computed at EOD. Saves consumers a corp-action-aware adjustment kernel.
+- 🎯 **Three return flavours** — raw, split-adjusted (`_adj`), total-return (`_tr`). Most Indian APIs only give raw. Silently misleading 5y backtests are common.
+- 🏷️ **Group-tag taxonomy** (`adani-group`, `tata-group`) — useful primitive for cohort/concentration analysis. Underrated.
+- 🎤 **Concall transcript corpus** — your sleeping wedge (more in Part III).
+
+### 🔬 13 documented claims tested — punch list, not scorecard
+
+- ✅ **9 PASS** — depth claims, RFC envelope, auth, credit math, `expand[]`, fundamentals floor (2017-03-31), prices since 1995-01-02.
+- ⚠️ **2 CAVEAT** — XBRL provenance URLs 403 default user-agents (document required headers); rate-limit doc says 60/min but live header reports **600/min** (10× off — 30-second fix).
+- 🐛 **2 SILENT BUGS** *(these will lose serious users in week one)*:
+  - `high_52w` / `low_52w` / `dma_*` / `bb_*` not consistently split-adjusted (e.g. HDFCBANK shows `latest_close 784.85` against `high_52w 2025.8`)
+  - `first_trade_date` returns `2021-01-15` for HDFCBANK and TCS despite real listings in 1995 / 2004 — field is misnamed or coverage uneven
+
+---
+
+## 🔍 PART II — The Gaps
+
+### 📉 Missing public datasets (all free, all currently absent)
+
+- ❌ **Promoter pledge data** (BSE PHR + NSE) — highest-signal Indian fundamentals series
+- ❌ **SEBI insider trading** (Form B/C/D under PIT regs) — free, public, mandated
+- ❌ **Bulk + block deals** (NSE/BSE daily archives)
+- ❌ **FII / DII flows** (NSE provisional + SEBI finals) — daily macro indicator
+- ❌ **Shareholding pattern** (quarterly) — promoter / FII / DII / public split
+- ❌ **Subsidiary / segment financials** — conglomerates (RIL, ITC, L&T) need this
+- ❌ **Sell-side analyst consensus & revisions** — Trendlyne's main wedge
+- ❌ **F&O OI / IV surface** — out of scope, but ~85% of NSE turnover; rebrand explicitly as "fundamentals API" if staying cash-equity-only
+- ❌ **Pre-2017 fundamentals** — long-lead OCR project; unlocks full-cycle backtests
+- 🚨 **Point-in-time fundamentals (`as_of_filing_date`)** — without this, every backtest has look-ahead bias. *Quants will catch it in week one.* 1-week fix.
+- ❌ **SME / Emerge + BSE-only stocks** — coverage capped at Nifty 500 today; ambition should be the full NSE + BSE listed universe (~6,000+ securities)
+- 💎 **Concall guidance-change extraction** — substrate already there, no competitor has this. **Your single most differentiated dataset opportunity.**
+
+### 🔧 Correctness, doc, business-model gaps
+
+- 📝 Rate-limit doc inconsistency (60 vs 600) — 30-second fix
+- 🎚️ `meta.date_range.max` confuses XBRL period-end with last price bar — disambiguate
+- 💰 **Pricing serves nobody well** — Solo $29 / Pro $99 too pricey for Indian retail dev, too thin for B2B
+- 🚪 **No free tier** — self-inflicted wound for AI-agent / OSS adoption
+- 🏢 **No B2B "embed" tier** — broker fundamentals tab integrations have no public path
+- 📉 **No daily-active surface** — devs integrate once, then forget you. The deepest structural gap.
+
+### ⚖️ Fairness gaps
+
+- 🤝 No public commitment to unconflicted economics (no commission, no rebates)
+- 📋 No public correctness changelog
+- 🛡️ No SEBI Research Analyst posture for AI outputs
+- 📤 No data-portability commitment
+- 🚨 No formal AI-grounding rule (refuse-to-hallucinate)
+
+---
+
+## 💡 PART III — The Revised Pitch
+
+### 💀 Why a pure data API can't carry the company (8 failure modes)
+
+- F1. The data is fundamentally **public** (NSE / BSE / MCA / SEBI)
+- F2. **LLMs disintermediate** — they can rebuild your normalisation layer in hours by 2026
+- F3. **No daily-active surface** = no upsell, no virality, no behavioural data
+- F4. **Buyer base is bimodal** — neither retail nor B2B served well
+- F5. **No behavioural data flywheel** — can't see what users care about
+- F6. **No network effects** — API users don't bring API users
+- F7. **Aggregator gatekeeper risk** (Zerodha owns Tickertape; you're a tenant)
+- F8. **Hobby pricing** trains the market that you're hobby tooling — slowest-eroding mistake
+
+### 🗺️ Competitive map — the unclaimed quadrant
+
+- 🎨 **Tickertape** (₹2,399/yr, Zerodha-owned): UX + distribution. *Open door:* shallow on filings, no API, no AI agent.
+- 📱 **StockEdge** (₹399/mo): swing-trader community, scans. *Open door:* aggressive sales calls, no refunds, no API.
+- 📊 **Screener.in** (₹4,999/yr): cult value-investor brand. *Open door:* no iOS, EOD-only, UI from 2014.
+- 📈 **Trendlyne** (₹2,090/yr): DVM scoring, broker reports. *Open door:* dated UX, no API.
+- 🔬 **Tijori** ($9.28M Series A Nov 2025): alt-data 6,000+ ops metrics. *Open door:* dashboard-only, no API.
+- 📉 **Sensibull** (SEBI-RA registered): options-only. *Partner, don't compete.*
+- 💼 **INDmoney** (10M users / ₹213 Cr FY25 revenue): aggregation. *Open door:* commission-driven (conflict of interest).
+- 🏛️ **MProfit** (₹3–15k/yr custom): family-office grade. *Open door:* dated UI, no AI, no research.
+- 🎯 **The slot:** "Screener depth × Tickertape UX × AI-native × Dev API × Family Vault × Fairness Charter" — **nobody is on all six axes**.
+
+### 📈 Why now — three structural tailwinds
+
+- 🛑 **SEBI's F&O crackdown** collapsed retail derivatives volume **~75%** (397M → 68M contracts/mo). Punters being forcibly converted into cash-equity investors.
+- 🔌 **Account Aggregator framework matured** — 410 FIUs registered as of Dec 2025. Consent-based aggregation is now technically tractable.
+- 🤖 **AI agents becoming primary readers** of financial data. Cited, structured, expandable APIs win.
+
+### 🎯 The four-layer wedge
+
+- **Layer 1 — Data depth:** Close the gaps + ship the unique **concall guidance-change feed** + broaden coverage to full NSE + BSE listed universe.
+- **Layer 2 — AI-native research workflow:** Stock-page Research Agent, NL screener, earnings preview generator, portfolio coach, "why is X moving?" explainer, memo writer — all citation-grounded.
+- **Layer 3 — UX:** iOS + Android native, web app with composable blocks, 200ms p95, dark mode + monospace data tables, offline-first, WhatsApp delivery (opt-in).
+- **Layer 4 — Developer ecosystem:** Free tier, B2B SLA tier, webhooks/SSE, OSS SDKs (Python/JS/Rust), MCP directory, backtest API.
+
+### 🛡️ Why the integrated experience moats (8 axes — multiplicative, not additive)
+
+- M1. **Behavioural data flywheel** — every interaction trains the next recommendation
+- M2. **Switching costs across surfaces** — by month 18, leaving means rebuilding 5 things
+- M3. **Trust capital** — HNIs don't move financial data on a whim; trust compounds
+- M4. **Compliance moat** (DPDP + AA + RA + ISO + SOC) — 12–18 months and ₹2–5 Cr to build
+- M5. **Cited AI in regulated market** — only legally-deployable AI; your envelope architecture makes it trivial
+- M6. **Cross-product economics** — research / vault / advisor / embed all run on the same data layer
+- M7. **Network effects** via creator-published screens + family-to-family referrals
+- M8. **Daily-active surface** = pricing power (₹3,999–₹49,999 vs hobby tier)
+
+### 🏠 The Family Vault — the unlock
+
+- 👨‍👩‍👧 **Concept:** consented multi-member household (Self / Spouse / HUF / Children / Parents) with role-based visibility (Owner / Member-Self / Advisor / Auditor) + per-member privacy switches
+- 🔌 **3 ingestion rails:** SEBI Account Aggregator (primary), CAS PDF parsing (onboarding), direct broker APIs (Kite/Upstox/Dhan/AngelOne — power-user)
+- 🪟 **6 surfaces:**
+  - Roll-ups (family aggregate, per-member, sector / factor / group exposure)
+  - Holdings ↔ research join (concall summary + guidance change per owned ticker)
+  - **AI Family CIO** (the killer surface — research notes within RA scope)
+  - Tax + capital-gains automation (replaces MProfit for 70% of users)
+  - Goals & rebalancing (scenario-framed, not advice-framed)
+  - Audit & estate
+- 🎯 **Differentiated vs INDmoney** (no commissions, no conflict) and **vs MProfit** (AI + research + modern UX + zero-knowledge tier)
+
+### 💰 Pricing redesign — 7-tier barbell
+
+- 🆓 **Free** — ₹0 — funnel + AI agents (1k API reads/mo, 1 account, CAS only)
+- 👤 **Investor** — ₹1,499/yr — solo casual-serious
+- 🎯 **Pro** — ₹3,999/yr — replaces Tickertape Pro *and* Screener.in
+- 🏠 **Family** — ₹7,999/yr — up to 6 members — **the wedge SKU** (~₹1,333/member; below 6× Tickertape Pro)
+- 🏛️ **Family-Office** — ₹24,999/yr — up to 12 members + zero-knowledge tier; replaces MProfit
+- 👔 **Advisor / RIA** — ₹49,999/yr per seat — SEBI RIAs, sub-PMS, family CFOs
+- 🔧 **Embed (B2B)** — ₹5L–₹50L/yr — brokers, PMS firms, AMC distributor portals
+
+### 🚀 GTM — 5 phases over 24 months
+
+- **Phase A (months 0–6) 🛠️** — Developer credibility wedge. Free tier, Python SDK, MCP directory, founder content. Targets: 2,000 GitHub stars, 500 free signups.
+- **Phase B (months 4–10) 🐦** — Prosumer app launch, FinTwit-led. Custom creator screens, weekly concall guidance newsletter. Targets: 25,000 downloads, 1,500 paid.
+- **Phase C (months 6–14) 👨‍💼** — Family Vault public, **CA referral channel** (highest-intent funnel for paid HNI tooling, nobody owns it). Targets: 200,000 MAU, 10,000 paid.
+- **Phase D (months 9–18) 🤝** — Advisor / B2B engine. SEBI RIA tier launch + 2–3 broker embeds. Targets: 3 broker integrations, ₹3 Cr B2B ARR.
+- **Phase E (months 15–24+) 🌐** — Network effects, family-to-family referral, "Genka Creators", pre-2017 fundamentals OCR completes.
+
+### 📊 Defensibility math (thesis estimates)
+
+- 💵 **ARPU:** ₹83–₹290/mo (data-only) → ₹665–₹2,083/mo (with vault) — **~7×**
+- 📈 **LTV:** ₹1,500–₹6,000 → ₹15,000–₹60,000 — **~10×**
+- ⏱️ **CAC payback:** 12–18 mo → 3–6 mo (CA channel) — **~3× faster**
+- 🎯 **ARR ceiling:** ₹15 Cr → ₹150–300 Cr — **10–20×**
+- 🔒 **Defensibility:** engineering grind → multiplicative moat across data + switching cost + regulated rails + behavioural data
+- 💼 **Investability:** bootstrap-grade → Series-A-grade
+
+### ⚖️ The Fairness & Compliance Charter (9 published commitments)
+
+- C1. 🚫 **No commissions, ever** — pure subscription, no rebates, no trail commissions, no affiliate fees
+- C2. 📜 **No unregistered investment advice** — AI labelled "research notes" until SEBI RA secured; AI never executes trades
+- C3. 🔬 **Citation-required AI · refuse-to-hallucinate** — every claim cited to `meta.sources[]`; refuse if can't ground
+- C4. 🤝 **Consent-first data architecture** — time-bounded, purpose-bounded, revocable consent via AA framework
+- C5. 📦 **Right to portability and erasure** — full machine-readable export in 7 days; server erasure in 30 days
+- C6. 🚪 **No dark patterns** — no aggressive sales calls, no auto-renewal traps, no obfuscated cancellation
+- C7. 🔒 **No third-party data sale** — ever, not for marketing, not subject to acquisition
+- C8. 📋 **Audit-log transparency** — every read of personal data immutably logged, user-reviewable
+- C9. 📰 **Public correctness changelog** — at `genka.dev/changelog` when bugs found, with affected fields
+- 💡 **Why the charter is the moat:** every competitor has a structural reason to be slightly unfair. A pure-subscription, citation-required, consent-first product is the only honest pitch — and Indian HNIs reward fairness with multi-year retention via CA word-of-mouth.
+
+### 🌏 Why this category, why now (the meta-thesis)
+
+- 🔄 Indian wealth-tech is in its **fourth re-bundling** — MF apps (2010-15) → Discount brokers (2015-20) → Research apps (2020-25) → **AI agent + consented family data (2025-30)**. Phase 4 has no winner yet.
+- 📦 **Data is commodity; context is moat.** Behavioural / relational / temporal / trust contexts are the next decade's defensibility.
+- 🏛️ **Indian regulation is anti-commoditising** — AA + DPDP + RA + Aadhaar + UPI rails. Full compliance stack: 12–18 months, ₹2–5 Cr. Anti-commoditising barrier.
+- 👨‍👩‍👧 **The Indian family is an unbuilt economic-unit category** — HUF, multi-generational pooled goals, joint decisions. ~10M HNI families × ~₹10k blended ARPU ≈ **~$1.2B TAM**.
+- 🤖 **AI-native is a paradigm shift, not a feature** — incumbents structurally cannot make the transition without breaking their existing users.
+- 🔌 **MCP is the strategic hedge** — if consumer surface wins, you're the Family OS; if LLMs become the primary interface, you're the **Twilio of Indian markets** (invisible, indispensable).
+- 🎯 **Fairness is the contrarian moat** — every other player has a structural reason to be slightly unfair.
+
+---
+
+## ⚙️ PART IV — Execution
+
+### ⚠️ Top 10 risks (ranked)
+
+1. 🤝 Trust deficit vs INDmoney/MProfit/brokers → mitigated by published Charter + zero-knowledge tier
+2. 📜 SEBI RA regs on AI buy/sell-adjacent output → apply for RA month 4
+3. 🛡️ DPDP enforcement May 2027 → DPDP-compliant by design from day one
+4. 🏰 Tickertape's Zerodha distribution moat → don't fight head-on; target 11Cr+ non-Zerodha investors
+5. 💸 Tijori's $9.28M war chest → out-build them on data + API + Charter in 12 months
+6. 💵 Indian retail willingness-to-pay thin above ₹3k/yr → barbell tiers (free + B2B)
+7. 🔌 AA framework dependence → multi-AA + CAS-parsing fallback + direct broker rails
+8. ⚖️ NSE/BSE legal pressure on data redistribution → stay public-source side, pay licence fees explicitly
+9. 🤖 AI hallucination in regulated context → Charter §C3 hard rule
+10. 💰 Capital required ₹15–25 Cr seed → fintech-thesis-aligned funds (Blume, Stellaris, Bessemer India)
+
+### 📅 90-day priorities (Monday morning starts here)
+
+- Week 1: Fix split-adjustment bug · rename `first_trade_date` · update rate-limit doc · publish first correctness changelog · file AA FIU application (4–8 month critical path) · publish Fairness Charter at `genka.dev/charter`
+- Weeks 1–6: Add 4 cheap public datasets (shareholding, insider, bulk/block, FII/DII) · license CASParser SDK · ship "drop your CAS" landing page
+- Month 1: Ship free tier + Python SDK + 5 GitHub notebooks · submit MCP server to Anthropic directory · Custom GPT · Perplexity Space · spec cost-basis/CG engine · start concall guidance-change extractor (most differentiated dataset; compounds while everything else runs) · file SEBI RA application
+- Months 1–4: Begin Kite/Upstox/Dhan/AngelOne broker integrations · hire (designer, AI/ML lead, compliance counsel, wealth-domain PM) · CA referral programme draft · zero-knowledge architecture spike · closed Vault beta sign-up page (1,000 wait-list before code is built)
+
+---
+
+## 🎲 PART V — The Bet
+
+- 🧱 **The substrate is right.** Engineering, envelope hygiene, primary-source citations — the rare hard parts are done.
+- 🎯 **The slot is real.** Six-axis intersection (research × UX × AI × API × Family Vault × Fairness Charter) has no incumbent.
+- ⏰ **The window is closing.** ~18 months before Tijori's growth dollars or INDmoney's research push entrench.
+- 💸 **The capital ask:** ₹15–25 Cr seed.
+- 📊 **The math:** ~10× ARR ceiling unlock, multiplicative moat, ~3× CAC-payback acceleration via CA channel.
+- ⚖️ **The non-negotiable:** publish the Fairness Charter on day one. Without it, the integrated experience is just another commission-conflicted aggregator.
+
+### 🌟 The 5 essentials, if you read nothing else
+
+1. 🚪 A pure data API has a structural ceiling of **~₹15 Cr** ARR — engineering excellence cannot break it
+2. 🛡️ The integrated-experience moat compounds **multiplicatively**, not additively
+3. 🏠 The **Family Vault** is the SKU that takes ARR ceiling to ~₹150–300 Cr
+4. 💎 The **concall guidance-change feed** is your unique wedge — substrate there, no competitor has it
+5. ⚖️ The **Fairness & Compliance Charter** is the only moat that compounds at venture speed in regulated finance — publish day one
+
+---
+
+📬 **Memo by Rakesh Waghela** · Engineering Leader · Product Builder · Systems Architect
+🔗 https://javajack.github.io/ · https://www.linkedin.com/in/rakeshwaghela/ · https://github.com/javajack · https://x.com/webiyo
+📅 v1.1 · 2026-04-27 · Independent builder-to-builder feedback · Not investment advice
